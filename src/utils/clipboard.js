@@ -1,3 +1,9 @@
+/*
+ * @Author: Rex Joush
+ * @Date: 2022-01-04 01:55:02
+ * @LastEditors: Rex Joush
+ * @LastEditTime: 2022-01-07 21:07:43
+ */
 import Vue from 'vue'
 import Clipboard from 'clipboard'
 
