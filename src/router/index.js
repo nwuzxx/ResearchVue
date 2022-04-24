@@ -8,6 +8,7 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import nestedRouter from './modules/nested'
+import researchRouter from './modules/research'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -75,12 +76,68 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        name: '首页',
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
-  }
-]
+  },
+  researchRouter,
+//   {
+//     path: '/research',
+//     component: Layout,
+//     redirect: '/research/paper',
+//     name: 'Research',
+//     meta: {
+//       title: '科研项目管理',
+//       icon: 'list',
+//       affix: true
+//     },
+//     children: [
+//       {
+//         path: 'paper',
+//         name: '论文管理',
+//         component: () => import('@/views/research/paper/index'),
+//         meta: { title: '论文管理', icon: 'documentation', affix: true }
+//       },
+//       {
+//         path: 'patent',
+//         name: '专利管理',
+//         component: () => import('@/views/research/patent/index'),
+//         meta: { title: '专利管理', icon: 'skill', affix: true },
+//         children: [
+//           {
+//             path: 'create',
+//             component: () => import('@/views/research/patent/action/create'),
+//             name: '专利录入',
+//             hidden:'ture',
+//             meta: { title: '专利录入' }
+//           },
+//         ]
+//       },
+//       // {
+//       //   path: 'patent/create',
+//       //   name: '添加专利',
+//       //   hidden:'ture',
+//       //   alwaysShow: true,
+//       //   component: () => import('@/views/research/patent/action/create'),
+//       //   meta: { title: '专利录入', affix: true }
+//       // },
+//       {
+        
+//         path: 'work',
+//         name: '著作管理',
+//         component: () => import('@/views/research/work/index'),
+//         meta: { title: '著作管理', icon: 'education', affix: true }
+//       },
+//       {
+//         path: 'project',
+//         name: '项目管理',
+//         component: () => import('@/views/research/project/index'),
+//         meta: { title: '项目管理', icon: 'clipboard', affix: true }
+//       }
+//     ]
+//   }
+ ]
 
 /**
  * asyncRoutes
@@ -103,6 +160,7 @@ export const asyncRoutes = [
 
   /** when your routing map is too long, you can split it into small modules **/
   nestedRouter,
+  
 
   {
     path: '/error',

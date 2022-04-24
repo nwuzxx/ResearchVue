@@ -4,4 +4,4 @@
  * @LastEditors: Rex Joush
  * @LastEditTime: 2022-01-04 01:30:41
  */
-export const baseUrl = 'http://localhost:8080'
+export const baseUrl = 'http://localhost:8082'

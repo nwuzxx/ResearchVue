@@ -8,8 +8,8 @@ import { baseUrl } from '@/api/url'
 import request from '@/utils/request'
 // 后台的 hello 接口
 export function getFirstPage(applyId) {
-    return request({
-        url: `${baseUrl}/hello/test`,
-        method: 'get'
-    })
+  return request({
+    url: `${baseUrl}/hello/test`,
+    method: 'get'
+  })
 }
