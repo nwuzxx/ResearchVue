@@ -5,9 +5,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 
 // import paper from '@/api/paper'

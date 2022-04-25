@@ -6,14 +6,14 @@
         <el-button style="float: right; padding: 3px 0" type="text">保存草稿</el-button>
       </div>
       <div class="text item">
-        <el-form  :model="paperList" :label-position='left' label-width="80px">
+        <el-form  :model="paperList" label-width="80px">
           
-           <el-form-item label="文章类型">
+           <!-- <el-form-item label="文章类型">
               <el-select v-model="paperList.paper_type" >
                 <el-option label="期刊" value="1"></el-option>
                 <el-option label="会议" value="2"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="文章标题">
                 <el-input  style="width: 95%" v-model="paperList.paperName" placeholder="请输入文章标题"></el-input>
@@ -21,7 +21,7 @@
 
             <el-form-item class="grid-content bg-purple" label="发表时间">
               <el-date-picker
-                v-model="paperDate"
+                v-model="paperList.paperDate"
                 type="date"
                 placeholder="请选择日期">
               </el-date-picker>
@@ -45,8 +45,6 @@
                 <el-option label="其他" value="2"></el-option>
               </el-select>
             </el-form-item>
-
-           
 
             <el-form-item label="单位名称">
               <el-input style="width: 95%" v-if="paperList.paperUnitName == 2" placeholder="请输入文章所属单位名称"></el-input>
@@ -72,7 +70,7 @@
             </el-form-item>
            
             <el-form-item >
-                <el-button type="primary">提交</el-button>
+                <el-button type="primary" @click="saveOrUpdate">提交</el-button>
                 <el-button type="warning">取消</el-button>
             </el-form-item> 
 
@@ -94,7 +92,7 @@
   </div>
 </template>
 <script>
-  // import paper from '@/api/paper'
+  import paper from '@/api/paper'
   export default{
     data(){
       return{
@@ -102,10 +100,35 @@
       }
     },
     created(){
+      //获取路由id值
+      //调取接口得到论文信息
+      if(this.$route.params  && this.$route.params.id){
+        const id =  this.$route.params.id
+        this.getPaperInform(id)
+      }
 
     },
     methods:{
-
+      //添加
+      saveOrUpdate(){
+        paper.addPaper(this.paperList)
+          .then(respense => {
+            //提示信息
+             this.$message({
+              type: 'success',
+              message: '论文信息录入成功!',
+            });
+            //跳转回列表页面
+            this.$router.push({path:'/research/paper/list'})
+          })
+      },
+      //根据id查询
+      getPaperInform(paper_id){
+        paper.getPaperId(paper_id) 
+          .then(response => {
+            this.paperList = response.data
+        })
+      }
     }
   }
   

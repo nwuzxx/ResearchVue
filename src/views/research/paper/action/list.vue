@@ -7,15 +7,15 @@
        <el-form-item prop="periodicalName" label="期刊名称">
         <el-input v-model="searchObj.periodicalName" placeholder="期刊名称"></el-input>
       </el-form-item>
-      <!-- <el-form-item prop="paperPublicationTime" label="发表时间">
+      <el-form-item prop="paperDate" label="发表时间">
         <el-date-picker
-          v-model="searchObj.paperPublicationTime"
+          v-model="searchObj.paperDate"
           type="datetimerange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :default-time="['12:00:00']">
         </el-date-picker>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item >
         <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
         <el-button type="warning" @click="resetForm('searchObj')">重置</el-button>
@@ -27,40 +27,38 @@
     
     
     <el-table :data='list' stripe border fit highlight-current-row style="width: 100%">
-    <el-table-column type="index" width="50"  align="center" label="序号"/>
-    <el-table-column sortable prop="paperDate" width="180px" align="center" label="发表时间"/>
-    <el-table-column prop="paperName" show-overflow-tooltip align="center" label="文章题目"/>
-    <el-table-column prop="periodicalName" show-overflow-tooltip align="center" label="期刊名称"/>
-    <el-table-column prop="authorSort" width="130px" align="center" label="本人排序"/>
-    <el-table-column prop="status"  width="140px" align="center" label="审核状态">
-      <template slot-scope="scope">
-        <el-tag type="success" v-if="scope.row.status > '0'">
-          通过
-        </el-tag>
-        <el-tag type="danger" v-else-if="scope.row.status < '0'">
-          未通过
-        </el-tag>
-        <el-tag type="primary" v-else>
-          正在审核
-        </el-tag>
-      </template>
-    </el-table-column>
+      <el-table-column prop="paperId" width="50"  align="center" label="序号"/>
+      <el-table-column sortable prop="paperDate" width="180px" align="center" label="发表时间"/>
+      <el-table-column prop="paperName" show-overflow-tooltip align="center" label="文章题目"/>
+      <el-table-column prop="periodicalName" show-overflow-tooltip align="center" label="期刊名称"/>
+      <el-table-column prop="authorSort" width="130px" align="center" label="本人排序"/>
+      <el-table-column prop="status"  width="140px" align="center" label="审核状态">
+        <template slot-scope="scope">
+          <el-tag type="success" v-if="scope.row.status > '0'">
+            通过
+          </el-tag>
+          <el-tag type="danger" v-else-if="scope.row.status < '0'">
+            未通过
+          </el-tag>
+          <el-tag type="primary" v-else>
+            正在审核
+          </el-tag>
+        </template>
+      </el-table-column>
 
-    <el-table-column
-      fixed="right"
-      align="center"
-      label="操作"
-      width="200">
-      <template slot-scope="scope">
-        <el-button type="success" size="mini" class="el-icon-view"  @click="handleClick(scope.row)"></el-button>
-        <el-button type="warning" size="mini" icon="el-icon-edit"></el-button>
-        <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)"></el-button>
-
-        <!-- <i style="color: blue" class="el-icon-view"></i>
-        <i style="color: blue" class="el-icon-view"></i>
-        <i style="color: blue" class="el-icon-view"></i> -->
-      </template>
-    </el-table-column>
+      <el-table-column
+        fixed="right"
+        align="center"
+        label="操作"
+        width="200">
+        <template slot-scope="scope">
+          <el-button type="success" size="mini" class="el-icon-view"  @click="handleClick(scope.row)"></el-button>
+          <router-link :to="'/research/paper/edit/'+scope.row.paperId">
+            <el-button type="warning" size="mini" icon="el-icon-edit"></el-button>
+          </router-link>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)"></el-button>
+        </template>
+      </el-table-column>
 
     </el-table>
 
@@ -76,9 +74,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 import paper from '@/api/paper'
 
@@ -87,7 +82,7 @@ export default{
   data() {
     return{
       current:1, //当前页
-      limit:3, //每页显示期刊数
+      limit:10, //每页显示期刊数
       searchObj:{}, //条件封装对象
       list:[], //每页数据集合
       total: 0 //总期刊数

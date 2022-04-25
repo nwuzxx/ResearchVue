@@ -15,7 +15,7 @@ export default{
             data: items  //使用json
         })
     },
-    //添加专利
+    //添加论文
     addPaper(paperList){
         return request({
             url:'/ResearchProjectCollectionSpringBoot/getInfo/addThesisManagement',
@@ -35,5 +35,21 @@ export default{
 
     //锁定和取消锁定 P53
 
-    //
+    //id查询
+    getPaperId(paper_id){
+        return request({
+            url:`/ResearchProjectCollectionSpringBoot/getInfo/GetThesis/${paper_id}`,
+            method:'get',
+        })
+    },
+
+    //修改
+    updatePaper(paperList){
+        return request({
+            url:`/ResearchProjectCollectionSpringBoot/getInfo/updateThesis`,
+            method:'post',
+            data: paperList
+        })
+    }
+    
 }

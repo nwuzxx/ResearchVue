@@ -33,7 +33,13 @@ const researchRouter = {
           hidden: true,
           meta: { title: '论文录入' }
         },
-        
+        {
+          path: 'edit/:id',
+          component: () => import('@/views/research/paper/action/create'),
+          name: '编辑专利',
+          hidden: true,
+          meta: { title: '编辑专利' }
+        },
       ]
     },
     {
@@ -57,6 +63,7 @@ const researchRouter = {
           hidden: true,
           meta: { title: '专利录入' }
         },
+        
         
       ]
     },
