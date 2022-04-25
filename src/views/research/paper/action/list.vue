@@ -27,9 +27,18 @@
     
     
     <el-table :data='list' stripe border fit highlight-current-row style="width: 100%">
-      <el-table-column prop="paperId" width="50"  align="center" label="序号"/>
+      <el-table-column
+            label="序号"
+            type="index"
+            width="50"
+            align="center">
+          <template scope="scope">
+            <!-- （当前页-1）* 每页条数 + 当前行数据的索引 -->
+            <span>{{(current - 1) * limit + scope.$index + 1}}</span> 
+          </template>
+      </el-table-column>
       <el-table-column sortable prop="paperDate" width="180px" align="center" label="发表时间"/>
-      <el-table-column prop="paperName" show-overflow-tooltip align="center" label="文章题目"/>
+      <el-table-column sortable prop="paperName" show-overflow-tooltip align="center" label="文章题目"/>
       <el-table-column prop="periodicalName" show-overflow-tooltip align="center" label="期刊名称"/>
       <el-table-column prop="authorSort" width="130px" align="center" label="本人排序"/>
       <el-table-column prop="status"  width="140px" align="center" label="审核状态">
@@ -53,9 +62,10 @@
         width="200">
         <template slot-scope="scope">
           <el-button type="success" size="mini" class="el-icon-view"  @click="handleClick(scope.row)"></el-button>
-          <router-link :to="'/research/paper/edit/'+scope.row.paperId">
+          <!-- <router-link :to="'/research/paper/edit/'+scope.row.paperId">
             <el-button type="warning" size="mini" icon="el-icon-edit"></el-button>
-          </router-link>
+          </router-link> -->
+           <el-button type="warning" size="mini" icon="el-icon-edit" @click="editPaper(scope.row.paperId)"></el-button>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)"></el-button>
         </template>
       </el-table-column>
@@ -118,6 +128,10 @@ export default{
     resetForm(formName){
          this.$refs[formName].resetFields()
          this.getList()
+    },
+    //编辑
+    editPaper(id){
+       this.$router.push('edit/'+ id)
     },
     //删除
     removePaper(id){

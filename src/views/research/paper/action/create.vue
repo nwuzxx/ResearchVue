@@ -23,6 +23,7 @@
               <el-date-picker
                 v-model="paperList.paperDate"
                 type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="请选择日期">
               </el-date-picker>
             </el-form-item> 
@@ -50,11 +51,6 @@
               <el-input style="width: 95%" v-if="paperList.paperUnitName == 2" placeholder="请输入文章所属单位名称"></el-input>
               <el-input style="width: 95%" v-else placeholder="西北大学" :disabled="true"></el-input>
             </el-form-item>
-
-            <!-- <el-form-item label="单位名称">
-              <el-input v-if="patentList.patent_unit == 2" placeholder="请输入专利所属单位名称"></el-input>
-              <el-input v-if="patentList.patent_unit == 1" :disabled="true"></el-input>
-            </el-form-item> -->
 
              <el-form-item label="作者总数">
               <el-input style="width: 95%" v-model="paperList.paperAuthorNum" placeholder="请输入作者总数"></el-input>
@@ -96,7 +92,10 @@
   export default{
     data(){
       return{
-        paperList:{}
+        paperList:{
+          periodicalLanguage: '1',
+          paperUnitName: '1'
+        },
       }
     },
     created(){
@@ -109,8 +108,15 @@
 
     },
     methods:{
+      //根据id查询
+      getPaperInform(paper_id){
+        paper.getPaperId(paper_id) 
+          .then(response => {
+            this.paperList = response.data
+        })
+      },
       //添加
-      saveOrUpdate(){
+      save(){
         paper.addPaper(this.paperList)
           .then(respense => {
             //提示信息
@@ -122,13 +128,28 @@
             this.$router.push({path:'/research/paper/list'})
           })
       },
-      //根据id查询
-      getPaperInform(paper_id){
-        paper.getPaperId(paper_id) 
-          .then(response => {
-            this.paperList = response.data
-        })
-      }
+      //修改
+      update(){
+        paper.updatePaper(this.paperList)
+          .then(respense => {
+            //提示信息
+             this.$message({
+              type: 'success',
+              message: '论文信息修改成功!',
+            });
+            //跳转回列表页面
+            this.$router.push({path:'/research/paper/list'})
+          })
+      },
+      //判断添加还是修改
+      saveOrUpdate(){
+        if(!this.$route.params.id){
+          this.save();
+        }else{
+          this.update();
+        }
+      },
+      
     }
   }
   
