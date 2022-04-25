@@ -67,7 +67,7 @@
            
             <el-form-item >
                 <el-button type="primary" @click="saveOrUpdate">提交</el-button>
-                <el-button type="warning">取消</el-button>
+                <el-button type="warning" @click="cancel">取消</el-button>
             </el-form-item> 
 
         </el-form>
@@ -149,7 +149,19 @@
           this.update();
         }
       },
-      
+      //取消新增
+      cancel(){
+        this.$confirm('取消后编辑内容将丢失，确认取消?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            // 刷新页面
+            this.$router.push({path:'/research/paper/list'})
+          })
+                  
+      }
+    
     }
   }
   
