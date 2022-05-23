@@ -5,40 +5,119 @@ import Layout from '@/layout'
 const researchRouter = {
   path: '/research',
   component: Layout,
-  redirect: '/research/paper/list',
+  redirect: '/research/paper/journal/list',
   name: '科研成果管理',
   meta: {
     title: '科研成果管理',
     icon: 'list'
   },
   children: [
+    // {
+    //   path: 'paper',
+    //   component: () => import('@/views/research/paper/index'), // Parent router-view
+    //   name: '论文管理',
+    //   meta: { title: '论文管理', icon: 'documentation'},
+    //   redirect: '/research/paper/list',
+    //   children: [
+    //     {
+    //       path: 'list',
+    //       component: () => import('@/views/research/paper/action/list'),
+    //       name: '论文列表',
+    //       hidden: true,
+    //       meta: { title: '论文列表' }
+    //     },
+    //     {
+    //       path: 'create',
+    //       component: () => import('@/views/research/paper/action/create'),
+    //       name: '论文录入',
+    //       hidden: true,
+    //       meta: { title: '论文录入' }
+    //     },
+    //     {
+    //       path: 'edit/:id',
+    //       component: () => import('@/views/research/paper/action/create'),
+    //       name: '编辑专利',
+    //       hidden: true,
+    //       meta: { title: '编辑专利' }
+    //     },
+    //     // {
+    //     //   path: 'conferencePaperList',
+    //     //   component: () => import('@/views/research/paper/action/card'),
+    //     //   name: '会议论文列表',
+    //     //   hidden: true,
+    //     //   meta: { title: '会议论文列表' }
+    //     // },
+    //   ]
+    // },
+    
     {
       path: 'paper',
-      component: () => import('@/views/research/paper/index'), // Parent router-view
+      component: () => import('@/views/research/paper/journal/index'), // Parent router-view
       name: '论文管理',
       meta: { title: '论文管理', icon: 'documentation'},
-      redirect: '/research/paper/list',
+      redirect: '/research/paper/journal/list',
       children: [
         {
-          path: 'list',
-          component: () => import('@/views/research/paper/action/list'),
-          name: '论文列表',
-          hidden: true,
-          meta: { title: '论文列表' }
+          path: 'journal',
+          component: () => import('@/views/research/paper/journal/index'),
+          name: '期刊论文管理',
+          redirect: '/research/paper/journal/list',
+          // hidden: true,
+          meta: { title: '期刊论文管理', icon: 'el-icon-s-management' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/paper/journal/action/journalPaperList'),
+              name: '列表',
+              hidden: true,
+              meta: {title: '列表'}
+            },
+            {
+              path: 'Create',
+              component: () => import('@/views/research/paper/journal/action/journalPaperCreate'),
+              name: '录入',
+              hidden: true,
+              meta: { title: '录入' }
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/paper/journal/action/journalPaperCreate'),
+              name: '编辑',
+              hidden: true,
+              meta: { title: '编辑' }
+            },
+          ]
         },
+        
         {
-          path: 'create',
-          component: () => import('@/views/research/paper/action/create'),
-          name: '论文录入',
-          hidden: true,
-          meta: { title: '论文录入' }
-        },
-        {
-          path: 'edit/:id',
-          component: () => import('@/views/research/paper/action/create'),
-          name: '编辑专利',
-          hidden: true,
-          meta: { title: '编辑专利' }
+          path: 'conference',
+          component: () => import('@/views/research/paper/conference/index'),
+          name: '会议论文管理',
+          redirect: '/research/paper/conference/List',
+          meta: { title: '会议论文管理', icon: 'el-icon-s-custom' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/paper/conference/action/conferencePaperList'),
+              name: '列表',
+              hidden: true,
+              meta: {title: '列表'}
+            },
+            {
+              path: 'Create',
+              component: () => import('@/views/research/paper/conference/action/conferencePaperCreate'),
+              name: '录入',
+              hidden: true,
+              meta: { title: '录入' }
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/paper/conference/action/conferencePaperCreate'),
+              name: '编辑',
+              hidden: true,
+              meta: { title: '编辑' }
+            },
+          ]
         },
       ]
     },
