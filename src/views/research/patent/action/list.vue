@@ -1,127 +1,176 @@
 <template>
-  <div class="app-container">
-    <el-form :inline="true" :model="tableData" class="demo-form-inline">
-      <el-form-item label="专利名称">
-        <el-input v-model="tableData.patent_name" placeholder="专利名称"></el-input>
+  <div style="padding:30px;">
+    <el-form ref="searchObj" :inline="true" :model="searchObj" class="demo-form-inline">
+      <el-form-item prop="patentName" label="专利名称">
+        <el-input v-model="searchObj.patentName" placeholder="专利名称" />
       </el-form-item>
-      <el-form-item label="公布时间">
+      <el-form-item prop="patentPubTime" label="公布时间">
         <el-date-picker
-          v-model="value1"
+          v-model="searchObj.patentPubTime"
           type="datetimerange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          :default-time="['12:00:00']">
-        </el-date-picker>
+          :default-time="['12:00:00']"
+        />
       </el-form-item>
-      <el-form-item >
-        <!-- <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-        <el-button type="default" @click="resetData()">清空</el-button> -->
-        <el-button type="primary" icon="el-icon-search">查询</el-button>
-        <el-button type="warning">清空</el-button>
-        
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+        <el-button type="warning" @click="resetForm('searchObj')">重置</el-button>
       </el-form-item>
-      <el-form-item >
-        <el-button type="success" icon="el-icon-circle-plus-outline" @click="addPatent" >新增</el-button>
-        <div><router-view/></div>
+      <el-form-item>
+        <el-button type="success" icon="el-icon-circle-plus-outline" @click="addPatent">新增</el-button>
+        <div><router-view /></div>
       </el-form-item>
-
     </el-form>
-    
-    
-    <el-table :data='tableData' stripe border fit highlight-current-row style="width: 100%">
-    <el-table-column type="index" width="50"  align="center" label="序号"/>
-    <el-table-column sortable prop="patent_app_time" width="180px" align="center" label="申请时间"/>
-    <el-table-column sortable prop="patent_pub_time" width="180px" align="center" label="公布时间"/>
-    <!-- <el-table-column prop="patent_aut_time" width="180px" align="center" label="授权时间"/> -->
-    <el-table-column prop="patent_type" width="150px" align="center" label="发明类型"/>
-    <el-table-column prop="patent_name" show-overflow-tooltip align="center" label="专利名称"/>
-    <!-- <el-table-column prop="patent_grant_number"  align="center" label="专利号"/> -->
-    <!-- <el-table-column prop="patent_author_name" show-overflow-tooltip align="center" label="作者"/> -->
-    <el-table-column prop="patent_author_sort" width="130px" align="center" label="本人排序"/>
-    <!-- <el-table-column prop="patent_prove_materials"  align="center" label="证明材料"/> -->
 
-    <el-table-column prop="patent_status"  width="140px" align="center" label="审核状态">
-      <template slot-scope="scope">
-        <el-tag type="success" v-if="scope.row.patent_status > '0'">
-          通过
-        </el-tag>
-        <el-tag type="danger" v-else-if="scope.row.patent_status < '0'">
-          未通过
-        </el-tag>
-        <el-tag type="primary" v-else>
-          正在审核
-        </el-tag>
-      </template>
-    </el-table-column>
+    <!-- 工具条 -->
+    <div>
+      <el-button type="danger" size="mini" @click="removeRows()">批量删除</el-button>
+    </div>
 
-    
+    <el-table :data="list" stripe border fit highlight-current-row style="width: 100%">
+      <el-table-column
+        label="序号"
+        type="index"
+        width="50"
+        align="center"
+      >
+        <template scope="scope">
+          <!-- （当前页-1）* 每页条数 + 当前行数据的索引 -->
+          <span>{{ (current - 1) * limit + scope.$index + 1 }}</span>
+        </template>
+      </el-table-column>
+      <!--  <el-table-column sortable prop="patentAppTime" width="180px" align="center" label="申请时间"/>  -->
+      <el-table-column sortable prop="patentPubTime" width="180px" align="center" label="公布时间" />
+      <!--  <el-table-column prop="patentAutTime" width="180px" align="center" label="授权时间"/>  -->
+      <el-table-column prop="patentType" width="150px" align="center" label="发明类型" />
+      <el-table-column prop="patentName" show-overflow-tooltip align="center" label="专利名称" />
+      <el-table-column prop="patentId" align="center" label="专利号" />
+      <el-table-column prop="authorName" show-overflow-tooltip align="center" label="作者" />
+      <!--  <el-table-column prop="authorNum" width="130px" align="center" label="作者总数"/>  -->
+      <el-table-column prop="authorSort" width="130px" align="center" label="本人排序" />
+      <!-- <el-table-column prop="patentCertificate"  align="center" label="证明材料"/>  -->
 
-    <el-table-column
-      fixed="right"
-      align="center"
-      label="操作"
-      width="200">
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="warning" size="small" icon="el-icon-view">查看</el-button>
-        <el-button type="success" size="small" icon="el-icon-edit">编辑</el-button>
-      </template>
-    </el-table-column>
+      <el-table-column prop="status" width="140px" align="center" label="审核状态">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.patent_status > '0'" type="success">
+            通过
+          </el-tag>
+          <el-tag v-else-if="scope.row.patent_status < '0'" type="danger">
+            未通过
+          </el-tag>
+          <el-tag v-else type="primary">
+            正在审核
+          </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        fixed="right"
+        align="center"
+        label="操作"
+        width="200"
+      >
+        <template slot-scope="scope">
+          <el-button type="success" size="mini" class="el-icon-view" @click="handleClick(scope.row)" />
+          <!-- 查看 -->
+          <el-button type="warning" size="mini" icon="el-icon-edit" @click="editPatent(scope.row.patentId)" />
+          <!-- 修改 -->
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePatent(scope.row.patentId)" />
+        <!-- 删除 -->
+        </template>
+      </el-table-column>
 
     </el-table>
 
-    <div class="block">
+    <!-- 分页 -->
     <el-pagination
-     background
-      layout="prev, pager, next"
+      :current-page="current"
+      :page-size="limit"
+      :total="total"
       style="padding: 30px 0; text-align: right;"
-      :total="total">
-    </el-pagination>
-    </div>
+      layout="prev, pager, next"
+      @current-change="getList"
+    />
     <router-view />
   </div>
 </template>
 
-
 <script>
-// import patent from '@/api/patent'
+import patent from '@/api/patent'
 
-// export default{
-//   //定义变量和初始值
-//   data() {
-//     return{
-//       current:1, //当前页
-//       limit:3, //每页显示专利数
-//       searchobj:{}, //条件封装对象
-//       list:[], //每页数据集合
-//       total:5 //总专利数
+export default {
+  // 定义变量和初始值
+  data() {
+    return {
+      current: 1, // 当前页
+      limit: 5, // 每页显示专利数
+      searchObj: {}, // 条件封装对象
+      list: [], // 每页数据集合
+      total: 0 // 总专利数
 
-//     }
-//   },
-//   //在页面渲染之前调用created()，一般调用methods定义的方法，得到数据
-//   created() {
-//     this.getlist()
-//   },
-//   //定义方法，进行请求接口调用
-//   methods: {
-//     //专利列表
-//     getlist(page=1){ //当前页参数
-//       this.current = page
-//       patent.getPatentList(this.current,this.limit,this.searchobj)
-//       .then(response => { //请求成功,response是接口返回数据
-//         //返回response赋值给list
-//         this.list = response.data.records
-//         //总专利数
-//         this.total = response.data.total
-//         console.log(response)
-//       }) 
-//       .catch(error => { //请求失败调用
-//         consloe.log(error)
-//       }) 
-//     }
-//   }
+    }
+  },
+  // 在页面渲染之前调用created()，一般调用methods定义的方法，得到数据
+  created() {
+    this.getList()
+  },
+  // 定义方法，进行请求接口调用
+  methods: {
+    // 专利列表
+    getList(page = 1) { // 当前页参数
+      this.current = page
+      patent.getPatentList(this.current, this.limit, this.searchObj)
+        .then(response => { // 请求成功,response是接口返回数据
+        // 返回response赋值给list
+          this.list = response.data.rows
+          // 总专利数
+          this.total = response.data.total
+          console.log(response)
+        })
+        .catch(error => { // 请求失败调用
+          consloe.log(error)
+        })
+    },
+    // 添加专利
+    addPatent() {
+      this.$router.push('create')
+      console.log(this.$router)
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+      this.getList()
+    },
+    // 编辑
+    editPatent(id) {
+      this.$router.push('edit/' + id)
+    },
+    // 删除
+    deletePatent(id) {
+      // alert(id)
+      this.$confirm('是否删除该信息?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        patent.removePatent(id)
+          .then(respense => {
+            // 提示信息
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            // 刷新页面
+            this.getList(1)
+          })
+      })
+    }
 
-// }
+  }
 
+}
+
+/*
 export default {
   methods: {
       handleClick(row) {
@@ -187,8 +236,7 @@ export default {
       }]
     }
   },
-}
-  
-  
-  
-// </script>
+
+*/
+
+</script>

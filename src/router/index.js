@@ -81,49 +81,49 @@ export const constantRoutes = [
       }
     ]
   },
-  researchRouter,
-//   {
-//     path: '/research',
-//     component: Layout,
-//     redirect: '/research/paper',
-//     name: 'Research',
-//     meta: {
-//       title: '科研项目管理',
-//       icon: 'list',
-//       affix: true
-//     },
-//     children: [
-//       {
-//         path: 'paper',
-//         name: '论文管理',
-//         component: () => import('@/views/research/paper/index'),
-//         meta: { title: '论文管理', icon: 'documentation', affix: true }
-//       },
-//       {
-//         path: 'patent',
-//         name: '专利管理',
-//         component: () => import('@/views/research/patent/index'),
-//         meta: { title: '专利管理', icon: 'skill', affix: true },
-//         children: [
-//           {
-//             path: 'create',
-//             component: () => import('@/views/research/patent/action/create'),
-//             name: '专利录入',
-//             hidden:'ture',
-//             meta: { title: '专利录入' }
-//           },
-//         ]
-//       },
-//       // {
-//       //   path: 'patent/create',
-//       //   name: '添加专利',
-//       //   hidden:'ture',
-//       //   alwaysShow: true,
-//       //   component: () => import('@/views/research/patent/action/create'),
-//       //   meta: { title: '专利录入', affix: true }
-//       // },
-//       {
-        
+  researchRouter
+  //   {
+  //     path: '/research',
+  //     component: Layout,
+  //     redirect: '/research/paper',
+  //     name: 'Research',
+  //     meta: {
+  //       title: '科研项目管理',
+  //       icon: 'list',
+  //       affix: true
+  //     },
+  //     children: [
+  //       {
+  //         path: 'paper',
+  //         name: '论文管理',
+  //         component: () => import('@/views/research/paper/index'),
+  //         meta: { title: '论文管理', icon: 'documentation', affix: true }
+  //       },
+  //       {
+  //         path: 'patent',
+  //         name: '专利管理',
+  //         component: () => import('@/views/research/patent/index'),
+  //         meta: { title: '专利管理', icon: 'skill', affix: true },
+  //         children: [
+  //           {
+  //             path: 'create',
+  //             component: () => import('@/views/research/patent/action/create'),
+  //             name: '专利录入',
+  //             hidden:'ture',
+  //             meta: { title: '专利录入' }
+  //           },
+  //         ]
+  //       },
+  //       // {
+  //       //   path: 'patent/create',
+  //       //   name: '添加专利',
+  //       //   hidden:'ture',
+  //       //   alwaysShow: true,
+  //       //   component: () => import('@/views/research/patent/action/create'),
+  //       //   meta: { title: '专利录入', affix: true }
+  //       // },
+  //       {
+
 //         path: 'work',
 //         name: '著作管理',
 //         component: () => import('@/views/research/work/index'),
@@ -137,83 +137,82 @@ export const constantRoutes = [
 //       }
 //     ]
 //   }
- ]
+]
 
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [
+// export const asyncRoutes = [
 
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
+//   {
+//     path: '/icon',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'index',
+//         component: () => import('@/views/icons/index'),
+//         name: 'Icons',
+//         meta: { title: 'Icons', icon: 'icon', noCache: true }
+//       }
+//     ]
+//   },
 
-  /** when your routing map is too long, you can split it into small modules **/
-  nestedRouter,
-  
+//   /** when your routing map is too long, you can split it into small modules **/
+//   nestedRouter,
 
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'Error Pages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: { title: '401', noCache: true }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf/index'),
-        name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
-      }
-    ]
-  },
+//   {
+//     path: '/error',
+//     component: Layout,
+//     redirect: 'noRedirect',
+//     name: 'ErrorPages',
+//     meta: {
+//       title: 'Error Pages',
+//       icon: '404'
+//     },
+//     children: [
+//       {
+//         path: '401',
+//         component: () => import('@/views/error-page/401'),
+//         name: 'Page401',
+//         meta: { title: '401', noCache: true }
+//       },
+//       {
+//         path: '404',
+//         component: () => import('@/views/error-page/404'),
+//         name: 'Page404',
+//         meta: { title: '404', noCache: true }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/pdf',
+//     component: Layout,
+//     redirect: '/pdf/index',
+//     children: [
+//       {
+//         path: 'index',
+//         component: () => import('@/views/pdf/index'),
+//         name: 'PDF',
+//         meta: { title: 'PDF', icon: 'pdf' }
+//       }
+//     ]
+//   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+//   {
+//     path: 'external-link',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'https://github.com/PanJiaChen/vue-element-admin',
+//         meta: { title: 'External Link', icon: 'link' }
+//       }
+//     ]
+//   },
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
+//   // 404 page must be placed at the end !!!
+//   { path: '*', redirect: '/404', hidden: true }
+// ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

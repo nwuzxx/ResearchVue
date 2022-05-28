@@ -49,12 +49,12 @@ const researchRouter = {
     //     // },
     //   ]
     // },
-    
+
     {
       path: 'paper',
       component: () => import('@/views/research/paper/journal/index'), // Parent router-view
       name: '论文管理',
-      meta: { title: '论文管理', icon: 'documentation'},
+      meta: { title: '论文管理', icon: 'documentation' },
       redirect: '/research/paper/journal/list',
       children: [
         {
@@ -70,7 +70,7 @@ const researchRouter = {
               component: () => import('@/views/research/paper/journal/action/journalPaperList'),
               name: '列表',
               hidden: true,
-              meta: {title: '列表'}
+              meta: { title: '列表' }
             },
             {
               path: 'Create',
@@ -85,10 +85,10 @@ const researchRouter = {
               name: '编辑',
               hidden: true,
               meta: { title: '编辑' }
-            },
+            }
           ]
         },
-        
+
         {
           path: 'conference',
           component: () => import('@/views/research/paper/conference/index'),
@@ -101,7 +101,7 @@ const researchRouter = {
               component: () => import('@/views/research/paper/conference/action/conferencePaperList'),
               name: '列表',
               hidden: true,
-              meta: {title: '列表'}
+              meta: { title: '列表' }
             },
             {
               path: 'Create',
@@ -116,9 +116,9 @@ const researchRouter = {
               name: '编辑',
               hidden: true,
               meta: { title: '编辑' }
-            },
+            }
           ]
-        },
+        }
       ]
     },
     {
@@ -142,8 +142,13 @@ const researchRouter = {
           hidden: true,
           meta: { title: '专利录入' }
         },
-        
-        
+        {
+          path: 'edit/:id',
+          component: () => import('@/views/research/patent/action/create'),
+          name: '编辑专利',
+          hidden: true,
+          meta: { title: '编辑专利' }
+        }
       ]
     },
     {
@@ -155,45 +160,199 @@ const researchRouter = {
       children: [
         {
           path: 'list',
-          component: () => import('@/views/research/work/index'),
+          component: () => import('@/views/research/work/action/list'),
           name: '著作列表',
           hidden: true,
           meta: { title: '著作列表' }
         },
         {
           path: 'create',
-          component: () => import('@/views/research/work/create'),
+          component: () => import('@/views/research/work/action/create'),
           name: '著作录入',
           hidden: true,
           meta: { title: '著作录入' }
         },
-        
+        {
+          path: 'edit/:id',
+          component: () => import('@/views/research/work/action/create'),
+          name: '编辑',
+          hidden: true,
+          meta: { title: '编辑' }
+        }
       ]
     },
+    // {
+    //   path: 'project',
+    //   component: () => import('@/views/research/project/index'), // Parent router-view
+    //   name: '项目管理',
+    //   meta: { title: '项目管理', icon: 'clipboard' },
+    //   redirect: '/research/project/list',
+    //   children: [
+    //     {
+    //       path: 'list',
+    //       component: () => import('@/views/research/project/index'),
+    //       name: '项目列表',
+    //       hidden: true,
+    //       meta: { title: '项目列表' }
+    //     },
+    //     {
+    //       path: 'create',
+    //       component: () => import('@/views/research/project/create'),
+    //       name: '项目录入',
+    //       hidden: true,
+    //       meta: { title: '项目录入' }
+    //     },
+    //     {
+    //       path: 'edit/:id',
+    //       component: () => import('@/views/research/work/action/create'),
+    //       name: '编辑',
+    //       hidden: true,
+    //       meta: { title: '编辑' }
+    //     },
+
+    //   ]
+    // },
     {
       path: 'project',
-      component: () => import('@/views/research/project/index'), // Parent router-view
-      name: '项目管理',
+      component: () => import('@/views/research/project/index'),
+      // component: Layout,
+      redirect: '/research/project/project-cross/add/list',
+      name: 'project',
       meta: { title: '项目管理', icon: 'clipboard' },
-      redirect: '/research/project/list',
       children: [
         {
-          path: 'list',
-          component: () => import('@/views/research/project/index'),
-          name: '项目列表',
-          hidden: true,
-          meta: { title: '项目列表' }
+          path: 'project-cross',
+          component: () => import('@/views/research/project/project-cross/index'),
+          // redirect: '/research/project/project-cross/add',
+          name: 'Project-Cross',
+          meta: { title: '横向立项管理', icon: 'el-icon-edit-outline' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/project/project-cross/add/list'),
+              // redirect: '/research/project/project-cross/add',
+              name: 'list',
+              meta: { title: '横向立项管理' }
+            },
+            {
+              path: 'add',
+              component: () => import('@/views/research/project/project-cross/add/add'),
+              name: 'add',
+              meta: { title: '提交表单' },
+              hidden: true
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/project/project-cross/add/add'),
+              name: 'edit',
+              meta: { title: '编辑表单' },
+              hidden: true
+            }
+          ]
         },
         {
-          path: 'create',
-          component: () => import('@/views/research/project/create'),
-          name: '项目录入',
-          hidden: true,
-          meta: { title: '项目录入' }
+          path: 'project-length',
+          component: () => import('@/views/research/project/project-length/index'),
+          name: 'Project-length',
+          meta: { title: '纵向立项管理', icon: 'el-icon-edit-outline' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/project/project-length/add/list'),
+              // redirect: '/research/project/project-cross/add',
+              name: 'list',
+              meta: { title: '纵向立项管理' }
+            },
+            {
+              path: 'add',
+              component: () => import('@/views/research/project/project-length/add/add'),
+              name: 'add',
+              meta: { title: '提交表单' },
+              hidden: true
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/project/project-length/add/add'),
+              name: 'edit',
+              meta: { title: '编辑表单' },
+              hidden: true
+            }
+          ]
         },
-        
+        {
+          path: 'payment-cross',
+          component: () => import('@/views/research/project/payment-cross/index'),
+          name: 'Payment-Cross',
+          meta: { title: '横向到款管理', icon: 'el-icon-edit-outline' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/project/payment-cross/add/list'),
+              // redirect: '/research/project/project-cross/add',
+              name: 'list',
+              meta: { title: '横向到款管理' }
+            },
+            {
+              path: 'add',
+              component: () => import('@/views/research/project/payment-cross/add/add'),
+              name: 'add',
+              meta: { title: '提交表单' },
+              hidden: true
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/project/payment-cross/add/add'),
+              name: 'edit',
+              meta: { title: '编辑表单' },
+              hidden: true
+            }
+          ]
+        },
+        {
+          path: 'payment-length',
+          component: () => import('@/views/research/project/payment-length/index'),
+          name: 'Payment-length',
+          meta: { title: '纵向到款管理', icon: 'el-icon-edit-outline' },
+          children: [
+            {
+              path: 'list',
+              component: () => import('@/views/research/project/payment-length/add/list'),
+              // redirect: '/research/project/project-cross/add',
+              name: 'list',
+              meta: { title: '纵向到款管理' }
+            },
+            {
+              path: 'add',
+              component: () => import('@/views/research/project/payment-length/add/add'),
+              name: 'add',
+              meta: { title: '提交表单' },
+              hidden: true
+            },
+            {
+              path: 'edit/:id',
+              component: () => import('@/views/research/project/payment-length/add/add'),
+              name: 'edit',
+              meta: { title: '编辑表单' },
+              hidden: true
+            }
+          ]
+        }
+        // {
+        //   path: 'list',
+        //   component: () => import('@/views/project/add'),
+        //   name: 'List',
+        //   meta: { title: '提交表单' },
+        //   hidden: true
+        // },
+        // {
+        //   path: 'edit/:id',
+        //   component: () => import('@/views/project/add'),
+        //   name: 'List',
+        //   meta: { title: '编辑表单' },
+        //   hidden: true
+        // }
       ]
-    },
+    }
   ]
 }
 

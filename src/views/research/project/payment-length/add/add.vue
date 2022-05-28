@@ -1,0 +1,169 @@
+<template>
+  <div class="app-container" style="width:800px; padding: 10px;">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>信息录入</span>
+      </div>
+      <div class="text item">
+        <el-form :model="paymentLengthways" label-width="120px">
+          <!-- <el-form-item label="Id">
+            <el-input v-model="paymentLengthways.projectId" placeholder="请输入内容"/>
+          </el-form-item> -->
+          <el-form-item label="项目名称">
+            <el-input v-model="paymentLengthways.projectName" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="项目类型">
+            <el-input v-model="paymentLengthways.projectType" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="项目级别">
+            <el-input v-model="paymentLengthways.projectLevel" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="项目编号">
+            <el-input v-model="paymentLengthways.projectNumber" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="主持人">
+            <el-input v-model="paymentLengthways.host" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="项目来源">
+            <el-input v-model="paymentLengthways.projectSource" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="本次到款(元)">
+            <el-input v-model="paymentLengthways.receivePayment" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="拨款单位">
+            <el-input v-model="paymentLengthways.grantUnits" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="奖励率">
+            <el-input v-model="paymentLengthways.rewardRate" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="科研奖励分值">
+            <el-input v-model="paymentLengthways.rewardScore" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="报奖名称">
+            <el-input v-model="paymentLengthways.awardName" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="奖励第一申请人">
+            <el-input v-model="paymentLengthways.firstApplicant" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="所在科研团队">
+            <el-input v-model="paymentLengthways.researchTeam" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="学科">
+            <el-input v-model="paymentLengthways.subject" placeholder="请输入内容" />
+          </el-form-item>
+          <el-form-item label="到款日期">
+            <el-date-picker
+              v-model="paymentLengthways.receivePaymentTime"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择日期"
+            />
+          </el-form-item>
+          <el-form-item label="入账时间">
+            <el-date-picker
+              v-model="paymentLengthways.enterPaymentTime"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择日期"
+            />
+          </el-form-item>
+          <!-- <el-form-item label="创始日期">
+        <el-input v-model="projectLengthways.initiationDate" placeholder="请输入内容"/>
+      </el-form-item> -->
+          <!-- <el-form-item label="gmtCreate">
+        <el-input v-model="projectLengthways.gmtCreate" placeholder="请输入内容"/>
+      </el-form-item>
+      <el-form-item label="gmtModified">
+        <el-input v-model="projectLengthways.gmtModified" placeholder="请输入内容"/>
+      </el-form-item>
+      <el-form-item label="isDeleted">
+        <el-input v-model="projectLengthways.isDeleted" placeholder="请输入内容"/>
+      </el-form-item> -->
+
+          <el-form-item>
+            <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate">保存</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-card>
+  </div>
+</template>
+
+<script>
+import paymentLen from '@/api/paymentLen'
+export default {
+  data() {
+    return {
+      paymentLengthways: {
+        // projectId: '',
+        projectName: '',
+        projectType: '',
+        projectLevel: '',
+        projectNumber: '',
+        host: '',
+        projectSource: '',
+        // contractAmount: '',
+        // rewardScore: '',
+        // awardName: '',
+        // firstApplicant: '',
+        // researchTeam: '',
+        // subject: '',
+        // startEndDate: '2022-04-22T04:32:37.699Z',
+        // gmtCreate: '2022-04-22T04:32:37.699Z',
+        // gmtModified: '2022-04-22T04:32:37.699Z',
+        isDeleted: 0
+      },
+      saveBtnDisabled: false // 保存按钮是否禁用
+    }
+  },
+  created() {
+    console.log('created')
+    if (this.$route.params && this.$route.params.id) {
+      const id = this.$route.params.id
+      this.getInfo(id)
+      // console.log(id)
+    }
+  },
+  methods: {
+    // 根据id查询记录
+    getInfo(id) {
+      paymentLen.getData(id)
+        .then((response) => {
+          this.paymentLengthways = response.data.payLengthwaysId
+          console.log(response.data.payLengthwaysId)
+        })
+    },
+    // 提交
+    saveOrUpdate() {
+      this.saveBtnDisabled = true
+      if (!this.paymentLengthways.projectId) {
+        this.saveData()
+      } else {
+        this.updateData()
+      }
+    },
+    // 修改
+    updateData() {
+      paymentLen.updateData(this.paymentLengthways)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.$router.push({ path: '/research/project/payment-length/list' })
+        })
+    },
+    // 添加
+    saveData() {
+      paymentLen.addData(this.paymentLengthways)
+        .then(response => {
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+          this.$router.push({ path: '/research/project/payment-length/list' })
+        })
+    }
+  }
+}
+</script>
