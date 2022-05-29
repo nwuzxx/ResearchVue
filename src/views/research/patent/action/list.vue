@@ -24,9 +24,9 @@
     </el-form>
 
     <!-- 工具条 -->
-    <div>
+    <!-- <div>
       <el-button type="danger" size="mini" @click="removeRows()">批量删除</el-button>
-    </div>
+    </div> -->
 
     <el-table :data="list" stripe border fit highlight-current-row style="width: 100%">
       <el-table-column
@@ -72,11 +72,11 @@
         width="200"
       >
         <template slot-scope="scope">
-          <el-button type="success" size="mini" class="el-icon-view" @click="handleClick(scope.row)" />
+          <!-- <el-button type="success" size="mini" class="el-icon-view" @click="handleClick(scope.row)" /> -->
           <!-- 查看 -->
-          <el-button type="warning" size="mini" icon="el-icon-edit" @click="editPatent(scope.row.patentId)" />
+          <el-button type="success" size="mini" icon="el-icon-edit" @click="editPatent(scope.row.patentId)" >编辑</el-button>
           <!-- 修改 -->
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePatent(scope.row.patentId)" />
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePatent(scope.row.patentId)" >删除</el-button>
         <!-- 删除 -->
         </template>
       </el-table-column>

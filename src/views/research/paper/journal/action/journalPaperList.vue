@@ -62,12 +62,15 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" class="el-icon-view"  @click="handleClick(scope.row)"></el-button>
           <!-- <router-link :to="'/research/paper/edit/'+scope.row.paperId">
             <el-button type="warning" size="mini" icon="el-icon-edit"></el-button>
           </router-link> -->
-           <el-button type="warning" size="mini" icon="el-icon-edit" @click="editPaper(scope.row.paperId)"></el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)"></el-button>
+          <!-- <el-button type="success" size="mini" class="el-icon-view"  @click="handleClick(scope.row)"></el-button>
+          <el-button type="warning" size="mini" icon="el-icon-edit" @click="editPaper(scope.row.paperId)"></el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)"></el-button> -->
+
+          <el-button type="success" size="mini" icon="el-icon-edit" @click="editPaper(scope.row.paperId)">编辑</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removePaper(scope.row.paperId)">删除</el-button>
         </template>
       </el-table-column>
 

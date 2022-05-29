@@ -1,10 +1,10 @@
 <template>
-  <div style="padding:10px;">
+  <div style="padding:30px;">
     <!-- <el-alert :closable="false" title="menu 1">
       <router-view />
     </el-alert> -->
     <!-- 查询表单-->
-    <el-form :inline="true" class="demo-form-inline">
+    <el-form ref="paymentLengthwaysQuery" :inline="true" :model="paymentLengthwaysQuery" class="demo-form-inline">
       <el-form-item>
         <el-input v-model="paymentLengthwaysQuery.project_name" placeholder="项目名称" />
       </el-form-item>
@@ -29,12 +29,16 @@
       <!--          default-time="00:00:00"-->
       <!--        />-->
       <!--      </el-form-item>-->
-      <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
-      <el-button type="default" @click="resetData()">清空</el-button>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+        <el-button type="warning" @click="resetData()">清空</el-button>
       <!-- <router-link :to="'/research/project/project-cross/add/'">
         <el-button type="success" plain @click="getList()" style="float: right;margin-right: 55px;">新增表单</el-button>
       </router-link> -->
-      <el-button type="success" plain icon="el-icon-circle-plus-outline" style="float: right;margin-right: 55px;" @click="addProject">新增</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="success" icon="el-icon-circle-plus-outline" @click="addProject">新增</el-button>
+      </el-form-item>  
     </el-form>
 
     <!--表单-->
@@ -46,12 +50,23 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column prop="projectId" label="ID" width="60" align="center" />
-      <el-table-column sortable prop="projectName" label="项目名称" width="140" align="center" />
-      <el-table-column prop="projectSource" label="项目来源" width="150" align="center" />
+      <el-table-column
+        label="序号"
+        type="index"
+        width="50"
+        align="center"
+      >
+        <template scope="scope">
+          <!-- （当前页-1）* 每页条数 + 当前行数据的索引 -->
+          <span>{{ (current - 1) * limit + scope.$index + 1 }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="projectId" label="ID" width="60" align="center" /> -->
+      <el-table-column sortable prop="projectName" label="项目名称" show-overflow-tooltip align="center" />
+      <el-table-column prop="projectSource" label="项目来源" show-overflow-tooltip align="center" />
       <el-table-column prop="projectNumber" label="项目编号" width="100" align="center" />
       <el-table-column prop="receivePayment" label="到款金额" width="100" align="center" />
-      <el-table-column prop="researchTeam" label="所在科研团队" width="150" align="center" />
+      <el-table-column prop="researchTeam" label="所在科研团队" show-overflow-tooltip align="center" />
       <el-table-column prop="status" label="审核状态" width="140px" align="center">
         <!-- <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.status > '0'">
@@ -66,11 +81,11 @@
         </template> -->
       </el-table-column>
 
-      <el-table-column label="操作" width="300" align="center">
+      <el-table-column fixed="right" label="操作" width="250" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" class="el-icon-view" @click="handleClick(scope.row)">审核</el-button>
+          <!-- <el-button type="success" size="mini" class="el-icon-view" @click="handleClick(scope.row)">审核</el-button> -->
           <router-link :to="'/research/project/payment-length/edit/'+scope.row.projectId">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
+            <el-button type="success" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.projectId)">删除
           </el-button>
@@ -79,10 +94,10 @@
     </el-table>
     <!--分页-->
     <el-pagination
-      :current-page="page"
+      :current-page="current"
       :page-size="limit"
       :total="total"
-      style="padding: 30px 0; text-align: center;"
+      style="padding: 30px 0; text-align: right;"
       layout="total, prev, pager, next, jumper"
       @current-change="getList"
     />
@@ -97,8 +112,9 @@ export default {
 
   data() {
     return {
-      list: null,
-      page: 1,
+      current: 1,
+      list: [],
+      //page: 1,
       limit: 10,
       total: 0,
       paymentLengthwaysQuery: {}
@@ -111,8 +127,8 @@ export default {
   methods: {
 
     getList(page = 1) {
-      this.page = page
-      paymentLen.getList(this.page, this.limit, this.paymentLengthwaysQuery)
+      this.current = page
+      paymentLen.getList(this.current, this.limit, this.paymentLengthwaysQuery)
         .then(response => {
           console.log(response)
           this.list = response.data.rows

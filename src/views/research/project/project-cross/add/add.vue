@@ -1,43 +1,43 @@
 <template>
-  <div class="app-container" style="width:800px; padding: 10px;">
+  <div class="app-container" style="width: 100%; padding: 30px;">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>信息录入</span>
+        <span>关键信息录入</span>
       </div>
       <div class="text item">
-        <el-form :model="projectCross" label-width="120px">
+        <el-form :model="projectCross" label-width="110px">
           <!-- <el-form-item label="ID">
             <el-input v-model="projectCross.projectId" placeholder="请输入内容"/>
           </el-form-item> -->
           <el-form-item label="项目名称">
-            <el-input v-model="projectCross.projectName" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.projectName" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="项目来源">
-            <el-input v-model="projectCross.projectSource" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.projectSource" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="项目编号">
-            <el-input v-model="projectCross.projectNumber" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.projectNumber" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="主持人">
-            <el-input v-model="projectCross.host" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.host" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="合同额(万)">
-            <el-input v-model="projectCross.contractAmount" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.contractAmount" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="科研奖励分值">
-            <el-input v-model="projectCross.rewardScore" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.rewardScore" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="报奖名称">
-            <el-input v-model="projectCross.awardName" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.awardName" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="奖励第一申请人">
-            <el-input v-model="projectCross.firstApplicant" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.firstApplicant" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="所在科研团队">
-            <el-input v-model="projectCross.researchTeam" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.researchTeam" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="学科">
-            <el-input v-model="projectCross.subject" placeholder="请输入内容" />
+            <el-input style="width: 95%" v-model="projectCross.subject" placeholder="请输入内容" />
           </el-form-item>
           <el-form-item label="起止日期">
             <el-date-picker
@@ -67,6 +67,7 @@
 
           <el-form-item>
             <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate">保存</el-button>
+            <el-button type="warning" @click="cancel">取消</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -147,7 +148,18 @@ export default {
           })
           this.$router.push({ path: '/research/project/project-cross/list' })
         })
-    }
+    },
+    //取消新增
+      cancel(){
+        this.$confirm('取消后编辑内容将丢失，确认取消?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            // 刷新页面
+            this.$router.push({path:'/research/project/project-cross/list'})
+          })
+      }
   }
 }
 

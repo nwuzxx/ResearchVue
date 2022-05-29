@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:30px;">
+  <div style="padding:15px;">
     <!-- <el-alert :closable="false" > -->
     <router-view />
     <!-- </el-alert>   -->

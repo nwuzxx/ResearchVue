@@ -30,7 +30,7 @@
       <el-table-column prop="awardName" label="awardName" width="100" />
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button type="warning" size="mini" icon="el-icon-edit" @click="editWork(scope.row.worksId)">修改</el-button>
+          <el-button type="success" size="mini" icon="el-icon-edit" @click="editWork(scope.row.worksId)">修改</el-button>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.worksId)">删除</el-button>
         </template>
       </el-table-column>
